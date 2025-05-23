@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GPT 클립북</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 카테고리 목록 -->
+      <aside class="sidebar">
+        <h2>📁 카테고리</h2>
+
+        <hr style="margin: 15px 0" />
+        <button class="add-category">+ 새 카테고리</button>
+      </aside>
+
+      <!-- 클립 리스트 -->
+      <section class="clip-list">
+        <h2>💡 클립 목록</h2>
+        <button class="toggle-favorites">⭐ 즐겨찾기만 보기</button>
+        <!-- 여기에 추가 -->
+
+        <div class="clip-items"></div>
+
+        <hr style="margin: 15px 0" />
+        <button class="add-clip">+ 새 클립</button>
+      </section>
+
+      <!-- 클립 내용 보기 -->
+      <section class="clip-content"></section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,253 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Pretendard", sans-serif;
+  background-color: #f8f9fa;
+  color: #222;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* 카테고리 영역 */
+.sidebar {
+  /* width: 220px; */
+  flex: 0.2;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background: #f5f5f5;
+}
+
+.category:hover {
+  background-color: #e6f0ff;
+}
+
+.category span {
+  cursor: pointer;
+  flex: 1;
+}
+
+.category .actions {
+  display: flex;
+  gap: 4px;
+}
+.category .actions button,
+.delete-btn {
+  padding: 4px 8px;
+  font-size: 18px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #888;
+}
+.add-category {
+  width: 100%;
+  background-color: #007aff;
+  color: white;
+  padding: 8px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.add-category:hover {
+  background-color: #005ecb;
+}
+.category input.temp-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+input.temp-input {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Pretendard", sans-serif;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  margin-bottom: 5px; /* ✅ 본문 textarea와 간격 */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input.temp-input:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.category.drag-over-before {
+  border-top: 2px solid #007aff;
+}
+
+.category.drag-over-after {
+  border-bottom: 2px solid #007aff;
+}
+.category.active {
+  background-color: #f0f8ff; /* 밝은 파랑 */
+  border-left: 4px solid #007aff;
+}
+
+.clip.active {
+  background-color: #fff9e5; /* 밝은 노랑 느낌 */
+  border-left: 4px solid #f90;
+}
+
+/* 클립 리스트 */
+.clip-list {
+  flex: 0.25;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.clip-list h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.clip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fff;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.clip:hover {
+  border-color: #007aff;
+  background: #f0f8ff;
+}
+.toggle-favorites {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.clip .title {
+  flex: 1;
+}
+.fav-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-left: 8px;
+  margin-top: 10px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.delete-btn {
+  position: relative;
+  top: -6px;
+}
+.fav-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.add-clip {
+  width: 100%;
+  margin-bottom: 12px;
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.add-clip:hover {
+  background-color: #218838;
+}
+.clip input.temp-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+textarea.temp-input {
+  width: 100%;
+  height: 50%;
+  font-size: 14px;
+  padding: 8px;
+  resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+}
+.clip.dragging {
+  opacity: 0.5;
+}
+
+.clip.drag-over-before {
+  border-top: 2px solid #007aff;
+}
+
+.clip.drag-over-after {
+  border-bottom: 2px solid #007aff;
+}
+
+/* 클립 내용 */
+.clip-content {
+  /* width: 40%; */
+  flex: 0.55;
+  padding: 20px;
+  background-color: #ffffff;
+  overflow-y: auto;
+  margin-top: 15px;
+}
+
+.clip-content h3 {
+  margin-top: 0;
+}
+
+.clip-content .controls {
+  margin-top: 15px;
+}
+
+button {
+  padding: 8px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.edit {
+  background-color: #007aff;
+  color: white;
+}
+.hidden {
+  display: none !important;
+}
