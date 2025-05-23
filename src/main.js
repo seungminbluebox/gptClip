@@ -6,10 +6,8 @@ import {
   currentCategoryId,
   toggleFavoritesOnly,
   getShowFavoritesOnly,
-  setClipData,
   setCategoryOrder,
   getCategoryOrder,
-  setCurrentCategory,
   uuid,
 } from "./data.js";
 

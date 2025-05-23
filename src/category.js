@@ -2,12 +2,9 @@ import {
   clipData,
   currentCategoryId,
   setClipData,
-  getOrderedCategoriesFromData,
   getCategoryOrder,
   setCategoryOrder,
   setCurrentCategory,
-  getClipsForCategory,
-  getCategoryNameById, // ✅
   getCurrentCategoryId,
 } from "./data.js";
 import { renderClipList } from "./clip.js";

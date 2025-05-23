@@ -2,10 +2,7 @@ import {
   clipData,
   setCurrentClip,
   getShowFavoritesOnly,
-  toggleFavoritesOnly,
-  currentClip,
   setCurrentCategory,
-  getCategoryNameById, // ✅ 추가
   getCurrentClip,
 } from "./data.js";
 
@@ -52,6 +49,7 @@ export function renderClipList(categoryId) {
       renderClipList(clip.categoryId); // ✅ .active 적용 위해 다시 렌더
       renderClipContent(clip); // 오른쪽 내용 표시
     });
+
     // 즐겨찾기
     div.querySelector(".fav-btn").addEventListener("click", (e) => {
       e.stopPropagation();

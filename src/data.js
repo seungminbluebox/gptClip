@@ -36,38 +36,6 @@ export function getCategoryOrder() {
   return categoryOrder;
 }
 
-// ✅ 카테고리 ID로 이름 가져오기
-export function getCategoryNameById(id) {
-  const found = categoryOrder.find((cat) => cat.id === id);
-  return found ? found.name : "(알 수 없음)";
-}
-
-// ✅ 이름으로 카테고리 ID 가져오기 (역방향)
-export function getCategoryIdByName(name) {
-  const found = categoryOrder.find((cat) => cat.name === name);
-  return found ? found.id : null;
-}
-
-// ✅ 카테고리 순서 렌더링
-export function getOrderedCategoriesFromData() {
-  const actualIds = [...new Set(clipData.map((c) => c.categoryId))];
-
-  let visible = categoryOrder.filter((cat) => actualIds.includes(cat.id));
-  const missing = actualIds
-    .filter((id) => !categoryOrder.some((cat) => cat.id === id))
-    .map((id) => ({ id, name: "(미지정)" }));
-
-  const full = [...visible, ...missing];
-  setCategoryOrder(full);
-  return full;
-}
-
-export function getClipsForCategory(categoryId) {
-  return clipData
-    .filter((c) => c.categoryId === categoryId)
-    .map((clip, index) => ({ ...clip, _index: index }));
-}
-
 export function toggleFavoritesOnly() {
   showFavoritesOnly = !showFavoritesOnly;
 }
