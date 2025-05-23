@@ -8,6 +8,7 @@ import {
   setCurrentCategory,
   getClipsForCategory,
   getCategoryNameById, // ✅
+  getCurrentCategoryId,
 } from "./data.js";
 import { renderClipList } from "./clip.js";
 
@@ -23,8 +24,8 @@ export function renderCategoryList() {
 
     div.setAttribute("draggable", true); // ✅ 드래그 가능
     div.dataset.categoryId = cat.id; // ✅ ID 저장
-    if (currentCategoryId === cat.id) {
-      div.classList.add("active"); // ✅ 현재 선택된 카테고리 강조
+    if (getCurrentCategoryId() === cat.id) {
+      div.classList.add("active");
     }
     div.innerHTML = `
       <span class="editable">${cat.name}</span>
@@ -98,8 +99,14 @@ export function renderCategoryList() {
           el.classList.remove("drag-over-before", "drag-over-after");
         });
     });
-    div.querySelector(".editable").addEventListener("click", () => {
-      renderClipList(cat.id); // ✅ ID 기반
+    div.addEventListener("click", (e) => {
+      // 버튼 영역은 제외하고 박스 클릭만 처리
+      const isButton = e.target.closest("button");
+      if (isButton) return;
+
+      setCurrentCategory(cat.id);
+      renderCategoryList();
+      renderClipList(cat.id);
     });
 
     // ✅ 카테고리 이름 수정

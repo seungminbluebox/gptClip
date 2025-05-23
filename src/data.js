@@ -93,3 +93,10 @@ export function uuid() {
     ? crypto.randomUUID()
     : Math.random().toString(36).substr(2, 9);
 }
+export function getCurrentCategoryId() {
+  return currentCategoryId;
+}
+
+export function getCurrentClip() {
+  return currentClip;
+}

@@ -6,6 +6,7 @@ import {
   currentClip,
   setCurrentCategory,
   getCategoryNameById, // ✅ 추가
+  getCurrentClip,
 } from "./data.js";
 
 export function renderClipList(categoryId) {
@@ -27,7 +28,7 @@ export function renderClipList(categoryId) {
     div.setAttribute("draggable", true);
     div.dataset.id = clip.id;
     div.dataset.index = index;
-    if (clip.id === currentClip?.id) {
+    if (clip.id === getCurrentClip()?.id) {
       div.classList.add("active");
     }
     div.innerHTML = `
@@ -44,10 +45,13 @@ export function renderClipList(categoryId) {
   `;
 
     // 클릭 → 내용 보기
-    div.querySelector(".title").addEventListener("click", () => {
-      renderClipContent(clip);
+    div.addEventListener("click", (e) => {
+      const isButton = e.target.closest("button");
+      if (isButton) return;
+      setCurrentClip(clip); // 상태 설정
+      renderClipList(clip.categoryId); // ✅ .active 적용 위해 다시 렌더
+      renderClipContent(clip); // 오른쪽 내용 표시
     });
-
     // 즐겨찾기
     div.querySelector(".fav-btn").addEventListener("click", (e) => {
       e.stopPropagation();
