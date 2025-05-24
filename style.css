@@ -268,12 +268,91 @@ button.edit {
   opacity: 0;
   pointer-events: none;
 }
+.auth-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./image/wekimeki1.jpg");
+  background-size: cover;
+  background-position: center 35%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.auth-area::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.auth-area * {
+  position: relative;
+  z-index: 2;
+}
+
+#login-btn {
+  background: transparent;
+  border: none;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.googleAuth {
+  width: 200px;
+  height: 200px;
+}
+
+/* 🔥 로그아웃 버튼은 고정된 오른쪽 상단 */
+#logout-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background-color: transparent;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+}
+#logout-btn img {
+  width: 100px;
+  height: 100px;
+}
+.hidden {
+  display: none !important;
+}
+
 @media (max-width: 1000px) {
   .app-container {
     flex-direction: column;
     height: auto; /* 세로 스크롤 허용 */
   }
-
+  .auth-area {
+    background-position: 0% 50%; /* 모바일에서는 중앙 유지 */
+  }
+  #logout-btn {
+    top: 5px;
+  }
+  #logout-btn img {
+    width: 70px;
+    height: 70px;
+  }
   .sidebar,
   .clip-list,
   .clip-content {

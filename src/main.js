@@ -10,6 +10,43 @@ import {
   getCategoryOrder,
   uuid,
 } from "./data.js";
+import { auth, provider } from "./firebase-config.js";
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+onAuthStateChanged(auth, (user) => {
+  const logoutBtn = document.querySelector("#logout-btn");
+  const app = document.querySelector(".app-container");
+  const loginScreen = document.querySelector(".auth-area");
+
+  if (user) {
+    console.log("✅ 로그인됨:", user.uid);
+    app.classList.remove("hidden");
+    loginScreen.classList.add("hidden"); // ✅ 로그인 배경 숨김
+    logoutBtn.classList.remove("hidden"); // ✅ 로그아웃 버튼 표시
+    // 🔜 이곳에서 Firestore에서 user.uid로 데이터 불러올 예정
+  } else {
+    console.log("🚪 로그아웃 상태");
+    app.classList.add("hidden");
+    loginScreen.classList.remove("hidden"); // ✅ 로그인 배경 다시 표시
+    logoutBtn.classList.add("hidden"); // ✅ 로그아웃 버튼 숨김
+  }
+});
+
+document.getElementById("login-btn").addEventListener("click", () => {
+  signInWithPopup(auth, provider).catch((err) => {
+    alert("로그인 오류: " + err.message);
+  });
+});
+
+document.getElementById("logout-btn").addEventListener("click", () => {
+  signOut(auth).catch((err) => {
+    alert("로그아웃 오류: " + err.message);
+  });
+});
 
 // ✅ 새 카테고리 추가
 document.querySelector(".add-category").addEventListener("click", () => {
