@@ -28,14 +28,16 @@ onAuthStateChanged(auth, async (user) => {
   const logoutBtn = document.querySelector("#logout-btn");
   const app = document.querySelector(".app-container");
   const loginScreen = document.querySelector(".auth-area");
-  setCurrentUserId(user.uid);
+  const darkModeToggle = document.querySelector(".darkmode-toggle");
 
   if (user) {
+    setCurrentUserId(user.uid);
+
     console.log("✅ 로그인됨:", user.uid);
     app.classList.remove("hidden");
     loginScreen.classList.add("hidden"); // ✅ 로그인 배경 숨김
     logoutBtn.classList.remove("hidden"); // ✅ 로그아웃 버튼 표시
-
+    darkModeToggle.classList.remove("hidden"); // ✅ 다크모드 토글 표시
     const userRef = doc(db, "users", user.uid);
     const snapshot = await getDoc(userRef);
 
@@ -59,11 +61,38 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelector(".clip-list").classList.add("hidden");
     document.querySelector(".clip-content").classList.add("hidden");
   } else {
+    setCurrentUserId(null);
+
     console.log("🚪 로그아웃 상태");
     app.classList.add("hidden");
     loginScreen.classList.remove("hidden"); // ✅ 로그인 배경 다시 표시
     logoutBtn.classList.add("hidden"); // ✅ 로그아웃 버튼 숨김
+    darkModeToggle.classList.add("hidden"); // ✅ 다크모드 토글 숨김
   }
+});
+const logoutImg = document.getElementById("logout-img");
+const toggleCheckbox = document.getElementById("toggle-darkmode");
+
+function updateLogoutImage(isDark) {
+  logoutImg.src = isDark
+    ? "./image/logoutForDark.png"
+    : "./image/logoutForBright.png";
+}
+
+toggleCheckbox.addEventListener("change", () => {
+  const isDark = toggleCheckbox.checked;
+  document.body.classList.toggle("dark-mode", toggleCheckbox.checked);
+  localStorage.setItem("theme", toggleCheckbox.checked ? "dark" : "light");
+  updateLogoutImage(isDark);
+});
+
+// 페이지 로드시 상태 복원
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+  const isDark = savedTheme === "dark";
+  document.body.classList.toggle("dark-mode", isDark);
+  toggleCheckbox.checked = isDark;
+  updateLogoutImage(isDark);
 });
 
 document.getElementById("login-btn").addEventListener("click", () => {
