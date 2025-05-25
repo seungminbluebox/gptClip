@@ -4,6 +4,7 @@ import {
   getShowFavoritesOnly,
   setCurrentCategory,
   getCurrentClip,
+  setClipData,
 } from "./data.js";
 
 export function renderClipList(categoryId) {
@@ -54,7 +55,7 @@ export function renderClipList(categoryId) {
     div.querySelector(".fav-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       clip.isFavorite = !clip.isFavorite;
-
+      setClipData([...clipData]); // 🔥 Firestore 반영
       renderClipList(categoryId);
     });
     div.querySelector(".delete-btn").addEventListener("click", (e) => {
@@ -65,6 +66,7 @@ export function renderClipList(categoryId) {
       const index = clipData.findIndex((c) => c.id === clip.id);
       if (index !== -1) {
         clipData.splice(index, 1); // ✅ 삭제
+        setClipData([...clipData]); // 🔥 Firestore 반영
         renderClipList(categoryId); // ✅ 리스트 갱신
         document.querySelector(".clip-content").classList.add("hidden"); // 오른쪽도 닫기
       }
@@ -127,6 +129,7 @@ export function renderClipList(categoryId) {
       let insertIndex = clipData.indexOf(targetClip);
       if (insertAfter) insertIndex++;
       clipData.splice(insertIndex, 0, sourceClip);
+      setClipData([...clipData]); // ✅ Firestore 동기화
 
       renderClipList(categoryId); // ✅ categoryId 기준으로 다시 렌더링
     });
@@ -205,6 +208,7 @@ function enableClipEdit(container, clip) {
     clip.title = newTitle;
     clip.content = newContent;
     clip.from = newFrom;
+    setClipData([...clipData]); // 🔥 Firestore 동기화
 
     const clipEls = document.querySelectorAll(".clip");
     clipEls.forEach((el) => {

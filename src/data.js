@@ -23,13 +23,25 @@ export let clipData = [
     isFavorite: false,
   },
 ];
+import {
+  doc,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { db } from "./firebase-config.js";
 
 export let currentClip = null;
 export let currentCategoryId = null;
 export let showFavoritesOnly = false;
+export let currentUserId = null;
+export const setCurrentUserId = (id) => (currentUserId = id);
 
 export function setCategoryOrder(newOrder) {
+  // categoryOrder = newOrder;
   categoryOrder = newOrder;
+  if (currentUserId) {
+    const userRef = doc(db, "users", currentUserId);
+    setDoc(userRef, { clipData, categoryOrder }, { merge: true });
+  }
 }
 
 export function getCategoryOrder() {
@@ -53,7 +65,12 @@ export function setCurrentClip(clip) {
 }
 
 export function setClipData(newData) {
+  // clipData = newData;
   clipData = newData;
+  if (currentUserId) {
+    const userRef = doc(db, "users", currentUserId);
+    setDoc(userRef, { clipData, categoryOrder }, { merge: true });
+  }
 }
 
 export function uuid() {

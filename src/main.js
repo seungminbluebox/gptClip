@@ -8,26 +8,56 @@ import {
   getShowFavoritesOnly,
   setCategoryOrder,
   getCategoryOrder,
+  setClipData,
+  setCurrentUserId,
   uuid,
 } from "./data.js";
-import { auth, provider } from "./firebase-config.js";
+import { db, auth, provider } from "./firebase-config.js";
 import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   const logoutBtn = document.querySelector("#logout-btn");
   const app = document.querySelector(".app-container");
   const loginScreen = document.querySelector(".auth-area");
+  setCurrentUserId(user.uid);
 
   if (user) {
     console.log("✅ 로그인됨:", user.uid);
     app.classList.remove("hidden");
     loginScreen.classList.add("hidden"); // ✅ 로그인 배경 숨김
     logoutBtn.classList.remove("hidden"); // ✅ 로그아웃 버튼 표시
-    // 🔜 이곳에서 Firestore에서 user.uid로 데이터 불러올 예정
+
+    const userRef = doc(db, "users", user.uid);
+    const snapshot = await getDoc(userRef);
+
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      console.log("📥 Firestore에서 사용자 데이터 로드됨");
+      setCategoryOrder(data.categoryOrder || []);
+      setClipData(data.clipData || []);
+    } else {
+      console.log("🆕 사용자 첫 로그인 - 빈 데이터 생성");
+      await setDoc(userRef, {
+        categoryOrder: [],
+        clipData: [],
+      });
+      setCategoryOrder([]);
+      setClipData([]);
+    }
+
+    // 렌더링 시작
+    renderCategoryList();
+    document.querySelector(".clip-list").classList.add("hidden");
+    document.querySelector(".clip-content").classList.add("hidden");
   } else {
     console.log("🚪 로그아웃 상태");
     app.classList.add("hidden");
@@ -111,7 +141,8 @@ document.querySelector(".add-clip").addEventListener("click", () => {
     isFavorite: false,
   };
 
-  clipData.push(newClip);
+  // clipData.push(newClip);
+  setClipData([...clipData, newClip]); // 배열을 업데이트 함수로 넘김
   renderClipList(currentCategoryId);
   renderClipContent(newClip);
 });
