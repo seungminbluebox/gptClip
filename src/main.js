@@ -49,6 +49,9 @@ onAuthStateChanged(auth, async (user) => {
     } else {
       console.log("🆕 사용자 첫 로그인 - 빈 데이터 생성");
       await setDoc(userRef, {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
         categoryOrder: [],
         clipData: [],
       });
