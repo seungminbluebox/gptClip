@@ -144,83 +144,70 @@ export function renderClipList(categoryId) {
 export function renderClipContent(clip) {
   setCurrentClip(clip);
   const container = document.querySelector(".clip-content");
-  container.innerHTML = `
-    <h3>${clip.title}</h3>
- 
-    <div>${marked.parse(clip.content)}</div>
-    <p class="clip-from" style="font-size: 0.9em; color: #888;">
+  const contentArea = container.querySelector(".clip-body");
+
+  contentArea.innerHTML = `
+    <h1 title="${clip.title}">${clip.title}</h1>
+    <div class="controls">
+      <button class="edit" data-mode="edit" title="클립 수정">  
+        <img class='editCilp' src="./image/editClip.png" alt="수정" />
+      </button>
+    </div> 
+    <div class="markdown-content" title="클립 내용">${marked.parse(
+      clip.content
+    )}</div>
+    <p class="clip-from" style="font-size: 0.9em; color: #888;" title="출처">
       출처: ${clip.from || "없음"}
     </p>
-    <div class="controls">
-      <button class="edit" data-mode="edit">수정</button>
-    </div>
   `;
   container.classList.remove("hidden");
 
-  container.querySelector(".edit").addEventListener("click", () => {
-    enableClipEdit(container, clip);
+  contentArea.querySelector(".edit").addEventListener("click", () => {
+    enableClipEdit(contentArea, clip);
   });
 }
 
 function enableClipEdit(container, clip) {
-  const titleEl = container.querySelector("h3");
-  const contentEl = container.querySelector("div");
-
-  if (!titleEl || !contentEl) return;
-
-  const fromEl = container.querySelector(".clip-from");
-  if (fromEl) fromEl.remove();
-
-  const originalTitle = clip.title;
-  const originalContent = clip.content;
-
   const titleInput = document.createElement("input");
   titleInput.className = "temp-input";
-  titleInput.value = originalTitle;
+  titleInput.value = clip.title;
 
   const contentInput = document.createElement("textarea");
   contentInput.className = "temp-input";
-  contentInput.value = originalContent;
-  contentInput.rows = 6;
+  contentInput.value = clip.content;
+  contentInput.rows = 10;
 
   const fromInput = document.createElement("input");
   fromInput.className = "temp-input";
   fromInput.value = clip.from || "";
   fromInput.placeholder = "출처 입력 (예: 채팅방 이름)";
 
-  titleEl.replaceWith(titleInput);
-  contentEl.replaceWith(contentInput);
-  container.insertBefore(fromInput, container.querySelector(".controls"));
+  const saveButton = document.createElement("button");
+  saveButton.className = "edit";
+  saveButton.innerHTML = `<img src="./image/saveClip.png" title="클립 저장" alt="저장" style="height: 24px;" />`;
+  saveButton.style.backgroundColor = "transparent";
+  saveButton.style.border = "none";
+  saveButton.setAttribute("data-mode", "save");
 
-  const button = container.querySelector(".edit");
-  button.textContent = "저장";
-  button.style.backgroundColor = "#ff3b30"; // 붉은색
-  button.setAttribute("data-mode", "save");
+  container.innerHTML = ""; // 이전 내용 초기화
 
-  const save = () => {
+  container.appendChild(titleInput); // 제목
+  container.appendChild(saveButton); // 저장 버튼
+  container.appendChild(contentInput); // 내용
+  container.appendChild(fromInput); // 출처
+
+  saveButton.onclick = () => {
     const newTitle = titleInput.value.trim();
     const newContent = contentInput.value.trim();
     const newFrom = fromInput.value.trim();
-
     if (!newTitle || !newContent) return;
 
-    // 데이터 반영
     clip.title = newTitle;
     clip.content = newContent;
     clip.from = newFrom;
-    setClipData([...clipData]); // 🔥 Firestore 동기화
 
-    const clipEls = document.querySelectorAll(".clip");
-    clipEls.forEach((el) => {
-      if (el.dataset.id === clip.id) {
-        const titleEl = el.querySelector(".title");
-        if (titleEl) titleEl.textContent = newTitle;
-      }
-    });
-    // 다시 렌더링
-    renderClipList(clip.categoryId); // ✅ 리스트 다시 렌더링
-    renderClipContent(clip); // ✅ 오른쪽도 다시 렌더링
+    setClipData([...clipData]); // Firestore 반영
+    renderClipList(clip.categoryId);
+    renderClipContent(clip);
   };
-
-  button.addEventListener("click", save);
 }

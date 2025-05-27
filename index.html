@@ -34,11 +34,22 @@
       </section>
 
       <!-- 클립 내용 보기 -->
-      <section class="clip-content"></section>
-      <label class="darkmode-toggle hidden">
-        <input type="checkbox" id="toggle-darkmode" hidden />
-        <span class="toggle-icon"></span>
-      </label>
+      <section class="clip-content">
+        <div class="button-bar">
+          <button id="logout-btn" class="hidden">
+            <img
+              id="logout-img"
+              src="./image/logoutForBright.png"
+              alt="logout"
+            />
+          </button>
+          <label class="darkmode-toggle hidden">
+            <input type="checkbox" id="toggle-darkmode" hidden />
+            <span class="toggle-icon"></span>
+          </label>
+        </div>
+        <div class="clip-body"></div>
+      </section>
     </div>
 
     <div class="auth-area">
@@ -46,8 +57,5 @@
         <img class="googleAuth" src="./image/googleLoginBrighter.png" />
       </button>
     </div>
-    <button id="logout-btn" class="hidden">
-      <img id="logout-img" src="./image/logoutForBright.png" alt="logout" />
-    </button>
   </body>
 </html>

@@ -207,6 +207,7 @@ input.temp-input:focus {
 }
 .clip input.temp-input {
   flex: 1;
+  margin: 5px 0;
   padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -236,20 +237,24 @@ textarea.temp-input {
 
 /* 클립 내용 */
 .clip-content {
-  /* width: 40%; */
+  position: relative;
   flex: 0.55;
   padding: 20px;
   background-color: #e9e9e9;
   overflow-y: auto;
   padding-top: 35px;
 }
-
-.clip-content h3 {
-  margin-top: 0;
+.button-bar {
+  position: absolute;
+  right: 0;
 }
 
-.clip-content .controls {
-  margin-top: 15px;
+.button-bar button,
+.button-bar .darkmode-toggle {
+  margin-left: 10px;
+}
+.clip-content h3 {
+  margin-top: 0;
 }
 
 button {
@@ -262,14 +267,17 @@ button {
 }
 
 button.edit {
-  background-color: #007aff;
+  background-color: transparent;
   color: white;
+}
+button.edit img {
+  width: 50px;
+  height: 50px !important;
 }
 .darkmode-toggle {
   position: absolute;
-  top: 20px;
+  top: -30px;
   right: 120px;
-  z-index: 20;
   cursor: pointer;
 }
 
@@ -306,7 +314,6 @@ body:not(.dark-mode) .toggle-icon::before {
   align-items: center;
   flex-direction: column;
   overflow: hidden;
-  z-index: 0;
 }
 
 .auth-area::before {
@@ -318,12 +325,10 @@ body:not(.dark-mode) .toggle-icon::before {
   bottom: 0;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.2);
-  z-index: 1;
 }
 
 .auth-area * {
   position: relative;
-  z-index: 2;
 }
 
 #login-btn {
@@ -343,13 +348,9 @@ body:not(.dark-mode) .toggle-icon::before {
 /* 🔥 로그아웃 버튼은 고정된 오른쪽 상단 */
 #logout-btn {
   position: absolute;
-  top: 10px;
+  top: -40px;
   right: 20px;
   background-color: transparent;
-  font-weight: bold;
-  border-radius: 6px;
-  border: none;
-  z-index: 10;
   padding: 0;
   margin: 0;
 }
@@ -357,9 +358,9 @@ body:not(.dark-mode) .toggle-icon::before {
   width: 100px;
   height: 100px;
 }
-.hidden {
+/* .hidden {
   display: none !important;
-}
+} */
 
 @media (max-width: 1000px) {
   .app-container {
@@ -405,12 +406,11 @@ body:not(.dark-mode) .toggle-icon::before {
     border-top: none;
     overflow-x: hidden;
     border-bottom: 2px solid #4aa055;
+    max-height: 400px; /* 모바일에서 높이 제한 */
   }
-
   .clip-content {
     margin-top: 0;
   }
-
   /* 버튼 여백 정리 */
   .add-category,
   .add-clip,
