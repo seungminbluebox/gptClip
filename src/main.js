@@ -23,6 +23,24 @@ import {
   getDoc,
   setDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+function repositionButtonBar() {
+  const buttonBar = document.querySelector(".button-bar");
+  const clipContent = document.querySelector(".clip-content");
+
+  const isInsideClipContent = clipContent.contains(buttonBar);
+  const isMobile = window.innerWidth <= 1000;
+
+  if (isMobile && isInsideClipContent) {
+    // <body> 최상단에 삽입
+    document.body.insertBefore(buttonBar, document.body.firstChild);
+  } else if (!isMobile && !isInsideClipContent) {
+    // 원래 자리로 복귀 (clip-content의 맨 앞)
+    clipContent.insertBefore(buttonBar, clipContent.firstChild);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", repositionButtonBar);
+window.addEventListener("resize", repositionButtonBar);
 
 onAuthStateChanged(auth, async (user) => {
   const logoutBtn = document.querySelector("#logout-btn");

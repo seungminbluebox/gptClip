@@ -6,6 +6,9 @@ import {
   getCurrentClip,
   setClipData,
 } from "./data.js";
+marked.setOptions({
+  breaks: true, // ← 핵심: 한 줄 엔터로도 <br> 처리됨
+});
 
 export function renderClipList(categoryId) {
   setCurrentCategory(categoryId); // ✅ 이 한 줄 추가!!
